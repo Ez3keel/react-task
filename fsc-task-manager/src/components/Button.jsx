@@ -1,8 +1,9 @@
 // Componente de botão
-export default function Button(props) {
+export default function Button({text}) {
   return (
-    <button className='mt-2 p-6 text-blue-600' onClick={props.onClick}>
-      {props.text}
+    <button className='bg-[#00ACB5] rounded-md px-3 py-1
+    text-xs text-white' >
+      {text}
     </button>
   );
 }
