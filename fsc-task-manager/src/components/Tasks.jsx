@@ -1,3 +1,4 @@
+import TaskSeparator from "./TaskSeparator";
 import Button from "./Button";
 import { Trash2, Plus, Sun, Moon, Cloudy } from "lucide-react";
 
@@ -28,31 +29,28 @@ const Tasks = () => {
         </div>
       </div>
 
-      {/* Lista de tarefas */}
-      <div className="rounded-xl bg-white p-6">
 
-        {/* MANHÂ */}
+      {/* Lista de tarefas */}
+      <div className="rounded-xl bg-white p-6 my-6">
+        {/* Manhã */}
          <div className="space-y-3">
-           <div className="flex gap-2 pb-1 border-b border-sold border-[#F4F4F5]">
-            <Sun/>
-            <p className="text-[#9A9C9F] text-sm">Manhã</p>
-          </div>
+           <TaskSeparator 
+            title="Manhã" icon={<Sun/>}>
+          </TaskSeparator>
          </div>
 
           {/* Tarde */}
           <div className="space-y-3 my-6">
-            <div className="flex gap-2 pb-1 border-b border-sold border-[#F4F4F5]">
-            <Cloudy/>
-            <p className="text-[#9A9C9F] text-sm">Tarde</p>
-          </div>
+            <TaskSeparator 
+              title="Tarde" icon={<Cloudy/>}>
+            </TaskSeparator>
           </div>
 
           {/* Noite */}
           <div className="space-y-3">
-              <div className="flex gap-2 pb-1 border-b border-sold border-[#F4F4F5]">
-              <Moon/>
-              <p className="text-[#9A9C9F] text-sm">Noite</p>
-            </div>
+            <TaskSeparator 
+              title="Noite" icon={<Moon/>}>
+            </TaskSeparator>
           </div>
 
       </div>
