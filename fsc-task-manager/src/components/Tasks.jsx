@@ -19,7 +19,7 @@ const Tasks = () => {
         </Button>
 
         <Button
-        variant="primary">>
+        variant="primary">
           Nova tarefa
           <Plus size={16}/>
         </Button>
