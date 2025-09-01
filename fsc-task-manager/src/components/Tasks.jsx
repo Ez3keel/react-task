@@ -1,34 +1,42 @@
-import Button from "./Button";
-import { Trash2, Plus } from "lucide-react";
+import Button from './Button';
+import TasksSeparator from './TaskSeparator';
+import { Trash2, Plus, Moon, Sun, Cloudy } from 'lucide-react';
 
 const Tasks = () => {
   return (
-    <div className="px-8 py-16 w-full">
-      <div className="flex w-full justify-between">
+    <div className='w-full space-y-6 px-8 py-16'>
+      <div className='flex w-full justify-between rounded-xl bg-white p-6'>
         <div>
-          <span className="text-xs font-semibold text-[#00ADB5]">Minhas Tarefas</span>
-          <h2 className="font-semibold text-xl">Minhas Tarefas</h2>
+          <span className='text-xs font-semibold text-[#00ADB5]'>
+            Minhas Tarefas
+          </span>
+          <h2 className='text-xl font-semibold'>Minhas Tarefas</h2>
         </div>
-      
 
-      <div className="flex items-center gap-4">
-        <Button
-          variant="ghost">
-          Limpar tarefa
-          <Trash2 size={16}/>
-        </Button>
+        <div className='flex items-center gap-4'>
+          <Button variant='ghost'>
+            Limpar tarefa
+            <Trash2 size={16} />
+          </Button>
 
-        <Button
-        variant="primary">
-          Nova tarefa
-          <Plus size={16}/>
-        </Button>
+          <Button variant='primary'>
+            Nova tarefa
+            <Plus size={16} />
+          </Button>
+        </div>
+      </div>
 
+      <div className='rounded-xl bg-white p-6'>
+        <div className='my-6 space-y-3'>
+          <TasksSeparator title='Manhã' icon={<Sun size={16} />} />
+        </div>
 
-        {/* <Button 
-          text="Nova tarefa" 
-          RightIcon={Plus} 
-        /> */}
+        <div className='my-6 space-y-3'>
+          <TasksSeparator title='Tarde' icon={<Cloudy size={16} />} />
+        </div>
+
+        <div div className='space-y-3'>
+          <TasksSeparator title='Noite' icon={<Moon size={16} />} />
         </div>
       </div>
     </div>
