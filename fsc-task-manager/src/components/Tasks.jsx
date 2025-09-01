@@ -1,8 +1,18 @@
+import { useState } from 'react';
 import Button from './Button';
 import TasksSeparator from './TaskSeparator';
 import { Trash2, Plus, Moon, Sun, Cloudy } from 'lucide-react';
+import TASKS from './constantes/tasks';
+import TaskItem from './TaskItem';
 
 const Tasks = () => {
+  const [tasks, setTasks] = useState(TASKS);
+
+  //Filtra somente as tarefas da manhã
+  const morningTasks = tasks.filter(task => task.time === 'morning');
+  const afternoonTasks = tasks.filter(task => task.time === 'afternoon');
+  const eveningTasks = tasks.filter(task => task.time === 'evening');
+
   return (
     <div className='w-full space-y-6 px-8 py-16'>
       <div className='flex w-full justify-between rounded-xl bg-white p-6'>
@@ -29,14 +39,30 @@ const Tasks = () => {
       <div className='rounded-xl bg-white p-6'>
         <div className='my-6 space-y-3'>
           <TasksSeparator title='Manhã' icon={<Sun size={16} />} />
+
+          {/* TAREFAS DE MANHÃ */}
+          {morningTasks.map(task => (
+            <TaskItem key={task.id} task={task} />
+          ))}
+          
         </div>
 
         <div className='my-6 space-y-3'>
           <TasksSeparator title='Tarde' icon={<Cloudy size={16} />} />
+
+          {/* TAREFAS DA TARDE */}
+          {afternoonTasks.map(task => (
+            <TaskItem key={task.id} task={task} />
+          ))}
         </div>
 
         <div div className='space-y-3'>
           <TasksSeparator title='Noite' icon={<Moon size={16} />} />
+
+          {/* TAREFAS DA NOITE */}
+          {eveningTasks.map(task => (
+            <TaskItem key={task.id} task={task} />
+          ))}
         </div>
       </div>
     </div>

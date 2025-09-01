@@ -9,6 +9,4 @@ const TasksSeparator = ({ title, icon }) => {
   )
 }
 
-
-
 export default TasksSeparator
