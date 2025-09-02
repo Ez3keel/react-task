@@ -1,6 +1,6 @@
 import { Check, LoaderCircle, ExternalLink } from 'lucide-react';
 
-const TaskItem = ({ task }) => {
+const TaskItem = ({ task, handleTaskCheckBoxClick }) => {
   const getStatusClasses = () => {
     if (task.status === 'done') {
       return 'bg-[#00ADB5]  text-[#00ACB5]';
@@ -17,7 +17,7 @@ const TaskItem = ({ task }) => {
 
   return (
     <div
-      className={`flex items-center justify-between gap-2 rounded-lg bg-opacity-10 px-4 py-3 ${getStatusClasses()}`}
+      className={`transition flex items-center justify-between gap-2 rounded-lg bg-opacity-10 px-4 py-3 ${getStatusClasses()}`}
     >
       <div className='flex items-center gap-2'>
         <label
@@ -27,6 +27,9 @@ const TaskItem = ({ task }) => {
             type='checkbox'
             checked={task.status === 'done'}
             className='absolute h-full w-full cursor-pointer opacity-0'
+            onChange={() => (
+              handleTaskCheckBoxClick(task.id)
+            )}
           />
           {task.status === 'done' && <Check color='white' size={16} />}
           {task.status === 'in_progress' && (
