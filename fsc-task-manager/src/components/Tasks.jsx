@@ -4,6 +4,7 @@ import TasksSeparator from './TaskSeparator';
 import { Trash2, Plus, Moon, Sun, Cloudy } from 'lucide-react';
 import TASKS from './constantes/tasks';
 import TaskItem from './TaskItem';
+import { toast } from 'sonner';
 
 const Tasks = () => {
   const [tasks, setTasks] = useState(TASKS);
@@ -11,6 +12,7 @@ const Tasks = () => {
   const handleDeleteClick = taskId => {
     const newTasks = tasks.filter(task => task.id !== taskId);
     setTasks(newTasks);
+    toast.success('Tarefa removida com sucesso!');
   };
 
   const handleCheckBoxClick = taskId => {
@@ -20,14 +22,17 @@ const Tasks = () => {
       }
 
       if (task.status === 'not_started') {
+        toast.success('Tarefa iniciada com sucesso');
         return { ...task, status: 'in_progress' };
       }
 
       if (task.status === 'in_progress') {
+        toast.success('Tarefa concluida com sucesso');
         return { ...task, status: 'done' };
       }
 
       if (task.status === 'done') {
+        toast.success('Tarefa reiniciada com sucesso');
         return { ...task, status: 'not_started' };
       }
 
