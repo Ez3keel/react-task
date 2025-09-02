@@ -1,6 +1,7 @@
-import { Check, LoaderCircle, ExternalLink } from 'lucide-react';
+import { Trash2, Check, LoaderCircle, ExternalLink } from 'lucide-react';
+import Button from './Button';
 
-const TaskItem = ({ task, handleTaskCheckBoxClick }) => {
+const TaskItem = ({ task, handleCheckBoxClick, handleDeleteClick }) => {
   const getStatusClasses = () => {
     if (task.status === 'done') {
       return 'bg-[#00ADB5]  text-[#00ACB5]';
@@ -17,7 +18,7 @@ const TaskItem = ({ task, handleTaskCheckBoxClick }) => {
 
   return (
     <div
-      className={`transition flex items-center justify-between gap-2 rounded-lg bg-opacity-10 px-4 py-3 ${getStatusClasses()}`}
+      className={`flex items-center justify-between gap-2 rounded-lg bg-opacity-10 px-4 py-3 transition ${getStatusClasses()}`}
     >
       <div className='flex items-center gap-2'>
         <label
@@ -27,9 +28,7 @@ const TaskItem = ({ task, handleTaskCheckBoxClick }) => {
             type='checkbox'
             checked={task.status === 'done'}
             className='absolute h-full w-full cursor-pointer opacity-0'
-            onChange={() => (
-              handleTaskCheckBoxClick(task.id)
-            )}
+            onChange={() => handleCheckBoxClick(task.id)}
           />
           {task.status === 'done' && <Check color='white' size={16} />}
           {task.status === 'in_progress' && (
@@ -43,9 +42,15 @@ const TaskItem = ({ task, handleTaskCheckBoxClick }) => {
         {task.title}
       </div>
 
-      <a href='#' className='transition hover:opacity-75'>
-        <ExternalLink size={16} />
-      </a>
+      <div className='flex items-center gap-2'>
+        <Button variant='ghost' onClick={() => handleDeleteClick(task.id)}>
+          <Trash2 size={16} />
+        </Button>
+
+        <a href='#' className='transition hover:opacity-75'>
+          <ExternalLink size={16} color='#9A9C9F' />
+        </a>
+      </div>
     </div>
   );
 };

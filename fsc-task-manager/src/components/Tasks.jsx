@@ -5,33 +5,36 @@ import { Trash2, Plus, Moon, Sun, Cloudy } from 'lucide-react';
 import TASKS from './constantes/tasks';
 import TaskItem from './TaskItem';
 
-
 const Tasks = () => {
   const [tasks, setTasks] = useState(TASKS);
 
-  const handleTaskCheckBoxClick = (taskId) => {
-      let newTasks = tasks.map((task) => {
+  const handleDeleteClick = taskId => {
+    const newTasks = tasks.filter(task => task.id !== taskId);
+    setTasks(newTasks);
+  };
 
-        if(task.id !== taskId) {
-          return task;
-        }
+  const handleCheckBoxClick = taskId => {
+    let newTasks = tasks.map(task => {
+      if (task.id !== taskId) {
+        return task;
+      }
 
-        if(task.status === 'not_started') {
-          return {...task, status: 'in_progress'}
-        }
+      if (task.status === 'not_started') {
+        return { ...task, status: 'in_progress' };
+      }
 
-        if(task.status === 'in_progress') {
-          return {...task, status: 'done'}
-        }
+      if (task.status === 'in_progress') {
+        return { ...task, status: 'done' };
+      }
 
-        if(task.status === 'done') {
-          return {...task, status: 'not_started'}
-        }
+      if (task.status === 'done') {
+        return { ...task, status: 'not_started' };
+      }
 
-        return task
-      })
-      setTasks(newTasks)
-  }
+      return task;
+    });
+    setTasks(newTasks);
+  };
 
   //Filtra somente as tarefas da manhã
   const morningTasks = tasks.filter(task => task.time === 'morning');
@@ -67,9 +70,13 @@ const Tasks = () => {
 
           {/* TAREFAS DE MANHÃ */}
           {morningTasks.map(task => (
-            <TaskItem key={task.id} task={task} handleTaskCheckBoxClick={handleTaskCheckBoxClick}/>
+            <TaskItem
+              key={task.id}
+              task={task}
+              handleCheckBoxClick={handleCheckBoxClick}
+              handleDeleteClick={handleDeleteClick}
+            />
           ))}
-          
         </div>
 
         <div className='my-6 space-y-3'>
@@ -77,7 +84,12 @@ const Tasks = () => {
 
           {/* TAREFAS DA TARDE */}
           {afternoonTasks.map(task => (
-            <TaskItem key={task.id} task={task} handleTaskCheckBoxClick={handleTaskCheckBoxClick} />
+            <TaskItem
+              key={task.id}
+              task={task}
+              handleCheckBoxClick={handleCheckBoxClick}
+              handleDeleteClick={handleDeleteClick}
+            />
           ))}
         </div>
 
@@ -86,12 +98,15 @@ const Tasks = () => {
 
           {/* TAREFAS DA NOITE */}
           {eveningTasks.map(task => (
-            <TaskItem key={task.id} task={task} handleTaskCheckBoxClick={handleTaskCheckBoxClick} />
+            <TaskItem
+              key={task.id}
+              task={task}
+              handleCheckBoxClick={handleCheckBoxClick}
+              handleDeleteClick={handleDeleteClick}
+            />
           ))}
         </div>
       </div>
-
-
     </div>
   );
 };
