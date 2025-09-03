@@ -5,9 +5,12 @@ import { Trash2, Plus, Moon, Sun, Cloudy } from 'lucide-react';
 import TASKS from './constantes/tasks';
 import TaskItem from './TaskItem';
 import { toast } from 'sonner';
+import AddTaskDialog from './AddTaskDialog';
 
 const Tasks = () => {
   const [tasks, setTasks] = useState(TASKS);
+  // Padrão false para não exibir o Dialog
+  const [AddTaskDialogIsOpen, SetAddTaskDialogIsOpen] = useState(false);
 
   const handleDeleteClick = taskId => {
     const newTasks = tasks.filter(task => task.id !== taskId);
@@ -62,10 +65,17 @@ const Tasks = () => {
             <Trash2 size={16} />
           </Button>
 
-          <Button variant='primary'>
+          <Button
+            variant='primary'
+            onClick={() => {
+              return SetAddTaskDialogIsOpen(true);
+            }}
+          >
             Nova tarefa
             <Plus size={16} />
           </Button>
+
+          <AddTaskDialog isOpen={AddTaskDialogIsOpen} />
         </div>
       </div>
 
