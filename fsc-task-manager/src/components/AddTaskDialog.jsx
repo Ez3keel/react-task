@@ -35,7 +35,8 @@ const AddTaskDialog = ({ isOpen, handleDialogClose }) => {
               size='large'
               className='w-full'
               variant='secondary'
-              onClick={() => SetAddTaskDialogIsOpen(false)}
+              // Fecha o dialog chama o set
+              onClick={() => handleDialogClose(false)}
             >
               Cancelar
             </Button>

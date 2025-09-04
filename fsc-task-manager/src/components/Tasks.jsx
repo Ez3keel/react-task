@@ -20,8 +20,7 @@ const Tasks = () => {
 
   const handleDialogClose = () => {
     SetAddTaskDialogIsOpen(false);
-  }
-
+  };
 
   const handleCheckBoxClick = taskId => {
     let newTasks = tasks.map(task => {
@@ -73,6 +72,7 @@ const Tasks = () => {
           <Button
             variant='primary'
             onClick={() => {
+              // Abre o Dialog
               return SetAddTaskDialogIsOpen(true);
             }}
           >
@@ -80,7 +80,11 @@ const Tasks = () => {
             <Plus size={16} />
           </Button>
 
-          <AddTaskDialog isOpen={AddTaskDialogIsOpen} handleDialogClose={handleDialogClose} />
+          <AddTaskDialog
+            // Quando true abre o Dialog
+            isOpen={AddTaskDialogIsOpen}
+            handleDialogClose={() => SetAddTaskDialogIsOpen(false)}
+          />
         </div>
       </div>
 
