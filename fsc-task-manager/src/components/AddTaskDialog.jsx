@@ -4,9 +4,11 @@ import Button from './Button';
 import { CSSTransition } from 'react-transition-group';
 import { useRef } from 'react';
 import './AddTaskDialog.css';
+import InputLabel from './InputLabel';
 // import AddTaskDialog from './AddTaskDialog';
+import TimeSelect from './TimeSelect';
 
-const AddTaskDialog = ({ isOpen, handleDialogClose }) => {
+const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
   const nodeRef = useRef();
 
   return (
@@ -33,6 +35,7 @@ const AddTaskDialog = ({ isOpen, handleDialogClose }) => {
                 Insira as informações a baixo
               </p>
 
+              {/* TITULO */}
               <div className='flex w-[336px] flex-col space-y-4'>
                 <Input
                   id='title'
@@ -40,8 +43,10 @@ const AddTaskDialog = ({ isOpen, handleDialogClose }) => {
                   placeholder='Insira o título da tarefa'
                 />
 
-                <Input id='time' label='Horário' placeholder='Horário' />
+                {/* HORÁRIO */}
+                <TimeSelect />
 
+                {/* DESCRIÇÃO */}
                 <Input
                   id='description'
                   label='Descrição'
@@ -57,7 +62,19 @@ const AddTaskDialog = ({ isOpen, handleDialogClose }) => {
                   >
                     Cancelar
                   </Button>
-                  <Button size='large' className='w-full'>
+                  <Button
+                    size='large'
+                    className='w-full'
+                    onClick={() =>
+                      handleAddTask({
+                        id: Math.random(),
+                        title: 'Teste',
+                        time: 'morning',
+                        description: 'Teste',
+                        status: 'not_started',
+                      })
+                    }
+                  >
                     Salvar
                   </Button>
                 </div>
