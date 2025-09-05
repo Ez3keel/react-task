@@ -2,13 +2,29 @@ import { createPortal } from 'react-dom';
 import Input from './Input';
 import Button from './Button';
 import { CSSTransition } from 'react-transition-group';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import './AddTaskDialog.css';
 import InputLabel from './InputLabel';
 // import AddTaskDialog from './AddTaskDialog';
 import TimeSelect from './TimeSelect';
+import { v4 as uuidv4 } from 'uuid';
 
 const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
+  const [time, setTime] = useState();
+  const [title, setTitle] = useState();
+  const [description, setDescription] = useState();
+
+  const handleSaveClick = () => {
+    handleAddTask({
+      id: uuidv4(),
+      title,
+      time,
+      description,
+      status: 'not_started',
+    });
+    handleDialogClose(false);
+  };
+
   const nodeRef = useRef();
 
   return (
@@ -41,16 +57,24 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
                   id='title'
                   label='Titulo'
                   placeholder='Insira o título da tarefa'
+                  value={title}
+                  // Quando ocorrer mudança no input ele vai atribudir o valor ao state Title
+                  onChange={event => setTitle(event.target.value)}
                 />
 
                 {/* HORÁRIO */}
-                <TimeSelect />
+                <TimeSelect
+                  value={time}
+                  onChange={event => setTime(event.target.value)}
+                />
 
                 {/* DESCRIÇÃO */}
                 <Input
                   id='description'
                   label='Descrição'
                   placeholder='Descreva a tarefa'
+                  value={description}
+                  onChange={event => setDescription(event.target.value)}
                 />
                 <div className='flex gap-3'>
                   <Button
@@ -62,18 +86,11 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
                   >
                     Cancelar
                   </Button>
+
                   <Button
                     size='large'
                     className='w-full'
-                    onClick={() =>
-                      handleAddTask({
-                        id: Math.random(),
-                        title: 'Teste',
-                        time: 'morning',
-                        description: 'Teste',
-                        status: 'not_started',
-                      })
-                    }
+                    onClick={handleSaveClick()}
                   >
                     Salvar
                   </Button>

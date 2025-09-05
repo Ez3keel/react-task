@@ -20,6 +20,7 @@ const Tasks = () => {
 
   const handleAddTask = task => {
     setTasks([...tasks, task]);
+    console.log(tasks);
     toast.success('Tarefa adicionada com sucesso');
   };
 
