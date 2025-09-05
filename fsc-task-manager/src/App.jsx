@@ -13,6 +13,7 @@ function App() {
           },
         }}
       />
+
       <Sidebar></Sidebar>
       <Tasks></Tasks>
     </div>

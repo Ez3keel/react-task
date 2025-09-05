@@ -2,7 +2,7 @@ import { createPortal } from 'react-dom';
 import Input from './Input';
 import Button from './Button';
 import { CSSTransition } from 'react-transition-group';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './AddTaskDialog.css';
 import InputLabel from './InputLabel';
 // import AddTaskDialog from './AddTaskDialog';
@@ -10,11 +10,15 @@ import TimeSelect from './TimeSelect';
 import { v4 as uuidv4 } from 'uuid';
 
 const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
-  const [time, setTime] = useState();
-  const [title, setTitle] = useState();
-  const [description, setDescription] = useState();
+  const [time, setTime] = useState('');
+  const [title, setTitle] = useState('morning');
+  const [description, setDescription] = useState('');
 
   const handleSaveClick = () => {
+    if (!title.trim() || !description.trim() || time.trim()) {
+      return alert('Preencha todos os campos');
+    }
+
     handleAddTask({
       id: uuidv4(),
       title,
@@ -26,6 +30,16 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
   };
 
   const nodeRef = useRef();
+
+  useEffect(() => {
+    if (!isOpen) {
+      setTime('');
+      setTitle('');
+      setDescription('');
+      console.log();
+    }
+    // Sempre que o IsOpen mudar ele vai executar
+  }, [isOpen]);
 
   return (
     // Quando isOpen for true ele exibe o Dialog
