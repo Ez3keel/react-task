@@ -1,6 +1,7 @@
 // Componente de entrada de texto
 import { forwardRef } from 'react';
 import InputLabel from './InputLabel';
+import InputErrorMessage from './inputErrorMessage';
 
 export default function Input({ label, errorMessage, ref, ...rest }) {
   return (
@@ -11,9 +12,7 @@ export default function Input({ label, errorMessage, ref, ...rest }) {
         ref={ref}
         {...rest}
       />
-      {errorMessage && (
-        <p className='text-left text-xs text-red-500'>{errorMessage}</p>
-      )}
+      {errorMessage && <InputErrorMessage>{errorMessage}</InputErrorMessage>}
     </div>
   );
 }
