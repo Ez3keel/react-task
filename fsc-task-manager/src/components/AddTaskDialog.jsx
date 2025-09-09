@@ -2,7 +2,7 @@ import { createPortal } from 'react-dom';
 import Input from './Input';
 import Button from './Button';
 import { CSSTransition } from 'react-transition-group';
-import { useEffect, useRef, useState } from 'react';
+import { use, useEffect, useRef, useState } from 'react';
 import './AddTaskDialog.css';
 import InputLabel from './InputLabel';
 // import AddTaskDialog from './AddTaskDialog';
@@ -13,8 +13,39 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
   const [time, setTime] = useState('');
   const [title, setTitle] = useState('morning');
   const [description, setDescription] = useState('');
+  const [errors, setErrors] = useState([]);
 
   const handleSaveClick = () => {
+    const newErrors = [];
+
+    // Adiciona o erro ao state
+    if (!title.trim()) {
+      newErrors.push({
+        inputName: 'title',
+        message: 'O titulo é obrigatório',
+      });
+    }
+
+    if (!time.trim()) {
+      newErrors.push({
+        inputName: 'time',
+        message: 'O horário é obrigatório',
+      });
+    }
+    if (!description.trim()) {
+      newErrors.push({
+        inputName: 'description',
+        message: 'A descrição é obrigatória',
+      });
+    }
+
+    //  Verifica se possui erros e retorna
+    if (newErrors.length > 0) {
+      // Adiciona os erros a lista pois o state só atualiza após finalizar a function
+      setErrors(newErrors);
+      return;
+    }
+
     if (!title.trim() || !description.trim() || time.trim()) {
       return alert('Preencha todos os campos');
     }
@@ -40,6 +71,14 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
     }
     // Sempre que o IsOpen mudar ele vai executar
   }, [isOpen]);
+
+  const titleErrors = errors.find(error => error.inputName === 'title');
+
+  const descriptionErrors = errors.find(
+    error => error.inputName === 'description',
+  );
+
+  const timeErrors = errors.find(error => error.inputName === 'time');
 
   return (
     // Quando isOpen for true ele exibe o Dialog
@@ -74,13 +113,20 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
                   value={title}
                   // Quando ocorrer mudança no input ele vai atribudir o valor ao state Title
                   onChange={event => setTitle(event.target.value)}
+                  errorMessage={titleErrors?.message}
                 />
 
                 {/* HORÁRIO */}
                 <TimeSelect
                   value={time}
                   onChange={event => setTime(event.target.value)}
+                  errorMessage={timeErrors?.message}
                 />
+                {/* {timeErrors && (
+                  <p className='text-left text-xs text-red-500'>
+                    {timeErrors.message}
+                  </p>
+                )} */}
 
                 {/* DESCRIÇÃO */}
                 <Input
@@ -89,7 +135,9 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
                   placeholder='Descreva a tarefa'
                   value={description}
                   onChange={event => setDescription(event.target.value)}
+                  errorMessage={descriptionErrors?.message}
                 />
+
                 <div className='flex gap-3'>
                   <Button
                     size='large'
@@ -104,7 +152,7 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
                   <Button
                     size='large'
                     className='w-full'
-                    onClick={handleSaveClick()}
+                    onClick={handleSaveClick}
                   >
                     Salvar
                   </Button>
