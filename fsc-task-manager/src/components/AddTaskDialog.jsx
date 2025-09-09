@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
   const [time, setTime] = useState('');
-  const [title, setTitle] = useState('morning');
+  const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [errors, setErrors] = useState([]);
 
@@ -39,10 +39,11 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
       });
     }
 
+    // Adiciona os erros a lista pois o state só atualiza após finalizar a function
+    setErrors(newErrors);
+
     //  Verifica se possui erros e retorna
     if (newErrors.length > 0) {
-      // Adiciona os erros a lista pois o state só atualiza após finalizar a function
-      setErrors(newErrors);
       return;
     }
 
