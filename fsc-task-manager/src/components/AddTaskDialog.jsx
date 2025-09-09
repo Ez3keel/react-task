@@ -10,13 +10,21 @@ import TimeSelect from './TimeSelect';
 import { v4 as uuidv4 } from 'uuid';
 
 const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
-  const [time, setTime] = useState('');
+  /*Retirado o state de title porque estamos usando UseRef
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  */
+  const [time, setTime] = useState('morning');
   const [errors, setErrors] = useState([]);
 
   const handleSaveClick = () => {
     const newErrors = [];
+
+    console.log(titleRef.current.value);
+
+    //Pega o valor do imput agora com useRef
+    const title = titleRef.current.value;
+    const description = descriptionRef.current.value;
 
     // Adiciona o erro ao state
     if (!title.trim()) {
@@ -47,7 +55,8 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
       return;
     }
 
-    if (!title.trim() || !description.trim() || time.trim()) {
+    console.log(time.trim());
+    if (!title.trim() || !description.trim() || !time.trim()) {
       return alert('Preencha todos os campos');
     }
 
@@ -62,12 +71,14 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
   };
 
   const nodeRef = useRef();
+  const titleRef = useRef();
+  const descriptionRef = useRef();
 
   useEffect(() => {
     if (!isOpen) {
-      setTime('');
-      setTitle('');
-      setDescription('');
+      setTime('morning');
+      // setTitle('');
+      //setDescription('');
       console.log();
     }
     // Sempre que o IsOpen mudar ele vai executar
@@ -111,10 +122,14 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
                   id='title'
                   label='Titulo'
                   placeholder='Insira o título da tarefa'
+                  /*
+                  Retiramos isso para utilizar useRef assim ele otimiza e não fica renderizando a cada digitação
                   value={title}
-                  // Quando ocorrer mudança no input ele vai atribudir o valor ao state Title
+                  Quando ocorrer mudança no input ele vai atribudir o valor ao state Title
                   onChange={event => setTitle(event.target.value)}
+                  */
                   errorMessage={titleErrors?.message}
+                  ref={titleRef}
                 />
 
                 {/* HORÁRIO */}
@@ -134,8 +149,9 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
                   id='description'
                   label='Descrição'
                   placeholder='Descreva a tarefa'
-                  value={description}
-                  onChange={event => setDescription(event.target.value)}
+                  // value={description}
+                  // onChange={event => setDescription(event.target.value)}
+                  ref={descriptionRef}
                   errorMessage={descriptionErrors?.message}
                 />
 
