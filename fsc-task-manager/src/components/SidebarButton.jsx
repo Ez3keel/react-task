@@ -1,15 +1,24 @@
+import { tv } from 'tailwind-variants';
+
+
+const sidebar = tv({
+  base: 'flex w-full items-center gap-2 rounded-lg px-6 py-3 ',
+  variants: {
+    color: {
+      selected: 'bg-brand-primary bg-opacity-15 text-brand-primary',
+      unselected: 'text-brand-dark-blue',
+    },
+  }
+
+})
+
+
 const SidebarButton = ({ children, variant }) => {
-  const VariantMap = {
-    unselected: 'text-gray',
-    selected: 'bg-[#E6F7F8] text-brand-primary',
-  };
-
-  const variantClasses = VariantMap[variant] || VariantMap[unselected];
-
+  
   return (
     <a
       href='#'
-      className={`flex w-full items-center gap-2 rounded-lg px-6 py-3 ${variantClasses}`}
+      className={sidebar(variant)}
     >
       {children}
     </a>
