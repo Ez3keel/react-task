@@ -1,5 +1,5 @@
 import { tv } from 'tailwind-variants';
-
+import PropTypes from 'prop-types';
 
 const sidebar = tv({
   base: 'flex w-full items-center gap-2 rounded-lg px-6 py-3 ',
@@ -26,6 +26,13 @@ const SidebarButton = ({ children, variant }) => {
 };
 
 export default SidebarButton;
+
+SidebarButton.PropTypes = {
+  children: PropTypes.node.isRequired,
+  variant: PropTypes.oneOf(['selected', 'unselected'])
+}
+
+
 
 /*
 const SidebarButton = ({ children, variant }) => {

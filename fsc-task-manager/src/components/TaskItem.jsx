@@ -1,5 +1,6 @@
 import { Trash2, Check, LoaderCircle, ExternalLink } from 'lucide-react';
 import Button from './Button';
+import PropTypes from 'prop-types';
 
 const TaskItem = ({ task, handleCheckBoxClick, handleDeleteClick }) => {
   const getStatusClasses = () => {
@@ -33,7 +34,7 @@ const TaskItem = ({ task, handleCheckBoxClick, handleDeleteClick }) => {
           {task.status === 'done' && <Check color='white' size={16} />}
           {task.status === 'in_progress' && (
             <LoaderCircle
-              className='text-brand-white animate-spin'
+              className='animate-spin text-brand-white'
               color='white'
               size={16}
             />
@@ -56,3 +57,19 @@ const TaskItem = ({ task, handleCheckBoxClick, handleDeleteClick }) => {
 };
 
 export default TaskItem;
+
+TaskItem.PropTypes = {
+  task: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    time: PropTypes.oneOf(['morning', 'afternoon', 'evening']).isRequired,
+    status: PropTypes.oneOf([
+      'not_started',
+      'in_progress',
+      'done',
+    ]).isRequired(),
+  }).isRequired(),
+  handleCheckBoxClick: PropTypes.func.isRequired,
+  handleDeleteClick: PropTypes.func.isRequired,
+};
