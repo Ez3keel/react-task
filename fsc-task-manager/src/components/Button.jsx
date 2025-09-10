@@ -1,4 +1,5 @@
 import { tv } from 'tailwind-variants';
+import PropTypes from 'prop-types';
 
 // ✅ Define uma vez só (fora do componente)
 const buttonStyles = tv({
@@ -41,6 +42,12 @@ Button.defaultProps = {
   size: 'small',
 };
 
+Button.PropTypes = {
+  children: PropTypes.node.isRequired,
+  variant: PropTypes.oneOf(['primary', 'ghost', 'secondary']),
+  size: PropTypes.oneOf(['small', 'large']),
+  className: PropTypes.string,
+};
 
 /*
 // Button.jsx

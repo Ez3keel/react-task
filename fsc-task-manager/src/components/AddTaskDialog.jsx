@@ -8,6 +8,7 @@ import InputLabel from './InputLabel';
 // import AddTaskDialog from './AddTaskDialog';
 import TimeSelect from './TimeSelect';
 import { v4 as uuidv4 } from 'uuid';
+import PropTypes from 'prop-types';
 
 const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
   /*Retirado o state de title porque estamos usando UseRef
@@ -182,6 +183,12 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
       </div>
     </CSSTransition>
   );
+};
+
+AddTaskDialog.PropTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  handleDialogClose: PropTypes.func.isRequired,
+  handleAddTask: PropTypes.func.isRequired,
 };
 
 export default AddTaskDialog;
