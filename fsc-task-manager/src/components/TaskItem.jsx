@@ -56,20 +56,16 @@ const TaskItem = ({ task, handleCheckBoxClick, handleDeleteClick }) => {
   );
 };
 
-export default TaskItem;
-
 TaskItem.PropTypes = {
   task: PropTypes.shape({
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     time: PropTypes.oneOf(['morning', 'afternoon', 'evening']).isRequired,
-    status: PropTypes.oneOf([
-      'not_started',
-      'in_progress',
-      'done',
-    ]).isRequired(),
-  }).isRequired(),
+    status: PropTypes.oneOf(['not_started', 'in_progress', 'done']).isRequired,
+  }).isRequired,
   handleCheckBoxClick: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired,
 };
+
+export default TaskItem;

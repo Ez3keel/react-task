@@ -1,5 +1,6 @@
 import InputErrorMessage from './inputErrorMessage';
 import InputLabel from './InputLabel';
+import PropTypes from 'prop-types';
 
 const TimeSelect = ({ value, onChange, errorMessage }) => {
   return (
@@ -16,11 +17,17 @@ const TimeSelect = ({ value, onChange, errorMessage }) => {
       >
         <option value='morning'>Manhã</option>
         <option value='afternoon'>Tarde</option>
-        <option value='eveningTasks'>Noite</option>
+        <option value='evening'>Noite</option>
       </select>
-      {errorMessage && (<InputErrorMessage>{errorMessage}</InputErrorMessage>)}
+      {errorMessage && <InputErrorMessage>{errorMessage}</InputErrorMessage>}
     </div>
   );
 };
 
 export default TimeSelect;
+
+TimeSelect.displayName = 'TimeSelect';
+TimeSelect.PropTypes = {
+  errorMessage: PropTypes.string,
+  ref: PropTypes.any,
+};
