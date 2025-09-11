@@ -1,16 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from './Button';
 import TasksSeparator from './TaskSeparator';
 import { Trash2, Plus, Moon, Sun, Cloudy } from 'lucide-react';
-import TASKS from './constantes/tasks';
 import TaskItem from './TaskItem';
 import { toast } from 'sonner';
 import AddTaskDialog from './AddTaskDialog';
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState(TASKS);
+  const [tasks, setTasks] = useState([]);
   // Padrão false para não exibir o Dialog
   const [AddTaskDialogIsOpen, SetAddTaskDialogIsOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      // Pegando dados da API
+      const response = await fetch('http://localhost:3000/tasks', {
+        method: 'GET',
+      });
+
+      // Converte os dados para json
+      const tasks = await response.json();
+
+      // Atualizar dados no state "tasks"
+      setTasks(tasks);
+    };
+
+    fetchTasks();
+  }, []);
 
   const handleDeleteClick = taskId => {
     const newTasks = tasks.filter(task => task.id !== taskId);
