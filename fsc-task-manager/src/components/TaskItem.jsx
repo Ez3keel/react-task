@@ -1,8 +1,32 @@
 import { Trash2, Check, LoaderCircle, ExternalLink } from 'lucide-react';
 import Button from './Button';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
-const TaskItem = ({ task, handleCheckBoxClick, handleDeleteClick }) => {
+const TaskItem = ({ task, handleCheckBoxClick, onDeleteSucess }) => {
+  const [deleteTaskIsLoading, setDeleteTaskIsLoading] = useState(false);
+
+  //DELETE - Excluir tarefa
+  const handleDeleteClick = async () => {
+    setDeleteTaskIsLoading(true);
+
+    // Pega o Id para deletar a tarefa
+    const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
+      method: 'DELETE',
+    });
+
+    // Se não receber nada ele retorna e aparece o erro
+    if (!response.ok) {
+      setDeleteTaskIsLoading(false);
+      return toast.error(
+        'Erro ao deletar a tarefa. Por favor, tente novamente.',
+      );
+    }
+    onDeleteSucess(task.id);
+    setDeleteTaskIsLoading(false);
+  };
+
   const getStatusClasses = () => {
     if (task.status === 'done') {
       return 'bg-[#00ADB5]  text-[#00ACB5]';
@@ -44,8 +68,19 @@ const TaskItem = ({ task, handleCheckBoxClick, handleDeleteClick }) => {
       </div>
 
       <div className='flex items-center gap-2'>
-        <Button variant='ghost' onClick={() => handleDeleteClick(task.id)}>
-          <Trash2 size={16} />
+        <Button
+          variant='ghost'
+          onClick={handleDeleteClick}
+          disable={deleteTaskIsLoading}
+        >
+          {deleteTaskIsLoading ? (
+            <LoaderCircle
+              className='animate-spin text-brand-text-gray'
+              size={16}
+            />
+          ) : (
+            <Trash2 size={16} />
+          )}
         </Button>
 
         <a href='#' className='transition hover:opacity-75'>
@@ -58,7 +93,7 @@ const TaskItem = ({ task, handleCheckBoxClick, handleDeleteClick }) => {
 
 TaskItem.PropTypes = {
   task: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     time: PropTypes.oneOf(['morning', 'afternoon', 'evening']).isRequired,

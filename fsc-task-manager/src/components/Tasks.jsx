@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Button from './Button';
 import TasksSeparator from './TaskSeparator';
-import { Trash2, Plus, Moon, Sun, Cloudy } from 'lucide-react';
+import { Trash2, Plus, Moon, Sun, Cloudy, LoaderCircle } from 'lucide-react';
 import TaskItem from './TaskItem';
 import { toast } from 'sonner';
 import AddTaskDialog from './AddTaskDialog';
@@ -9,7 +9,8 @@ import AddTaskDialog from './AddTaskDialog';
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   // Padrão false para não exibir o Dialog
-  const [AddTaskDialogIsOpen, SetAddTaskDialogIsOpen] = useState(false);
+  const [AddTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false);
+  const [deleteTaskIsLoading, setDeleteTaskIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -28,17 +29,78 @@ const Tasks = () => {
     fetchTasks();
   }, []);
 
-  const handleDeleteClick = taskId => {
-    const newTasks = tasks.filter(task => task.id !== taskId);
-    setTasks(newTasks);
-    toast.success('Tarefa removida com sucesso!');
+  //  POST - Criar nova tarefa (CREATE)
+  const handleAddTask = async newTask => {
+    try {
+      const response = await fetch('http://localhost:3000/tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newTask),
+      });
+
+      // Se não receber nada ele retorna e aparece o erro
+      if (!response.ok) {
+        return toast.error(
+          'Erro ao adicionar a tarefa. Por favor, tente novamente.',
+        );
+      }
+
+      const createdTask = await response.json();
+      setTasks([...tasks, createdTask]);
+      toast.success('Tarefa adicionada com sucesso');
+      setAddTaskDialogIsOpen(false); //Fecha o Dialog
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const handleAddTask = task => {
-    setTasks([...tasks, task]);
-    console.log(tasks);
-    toast.success('Tarefa adicionada com sucesso');
+  const onDeleteTaskSucess = async taskId => {
+    const newTasks = tasks.filter(task => task.id !== taskId);
+    setTasks(newTasks);
+    toast.success('Tarefa deletada');
   };
+
+  // //DELETE - Excluir tarefa
+  // const handleDeleteClick = async taskId => {
+  //   setDeleteTaskIsLoading(true);
+
+  //   try {
+  //     // Pega o Id para deletar a tarefa
+  //     const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
+  //       method: 'DELETE',
+  //     });
+
+  //     // Se não receber nada ele retorna e aparece o erro
+  //     if (!response.ok) {
+  //       return toast.error(
+  //         'Erro ao deletar a tarefa. Por favor, tente novamente.',
+  //       );
+  //     }
+
+  //     // Remove a tarefa da lista
+  //     setTasks(tasks.filter(task => task.id !== taskId));
+  //     toast.success('Tarefa removida com sucesso!');
+  //     setDeleteTaskIsLoading(false);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  // Mockup - DELETE
+  // const handleDeleteClick = taskId => {
+  //   const newTasks = tasks.filter(task => task.id !== taskId);
+  //   setTasks(newTasks);
+  //   toast.success('Tarefa removida com sucesso!');
+  // };
+
+  // criado com mockups - POST
+  // const handleAddTask = task => {
+  //   setTasks([...tasks, task]);
+  //   console.log(tasks);
+  //   toast.success('Tarefa adicionada com sucesso');
+  // };
 
   // const handleDialogClose = () => {
   //   SetAddTaskDialogIsOpen(false);
@@ -95,7 +157,7 @@ const Tasks = () => {
             variant='primary'
             onClick={() => {
               // Abre o Dialog
-              return SetAddTaskDialogIsOpen(true);
+              return setAddTaskDialogIsOpen(true);
             }}
           >
             Nova tarefa
@@ -121,7 +183,7 @@ const Tasks = () => {
               key={task.id}
               task={task}
               handleCheckBoxClick={handleCheckBoxClick}
-              handleDeleteClick={handleDeleteClick}
+              onDeleteSucess={onDeleteTaskSucess}
             />
           ))}
         </div>
@@ -135,7 +197,7 @@ const Tasks = () => {
               key={task.id}
               task={task}
               handleCheckBoxClick={handleCheckBoxClick}
-              handleDeleteClick={handleDeleteClick}
+              onDeleteSucess={onDeleteTaskSucess}
             />
           ))}
         </div>
@@ -149,7 +211,7 @@ const Tasks = () => {
               key={task.id}
               task={task}
               handleCheckBoxClick={handleCheckBoxClick}
-              handleDeleteClick={handleDeleteClick}
+              onDeleteSucess={onDeleteTaskSucess}
             />
           ))}
         </div>
