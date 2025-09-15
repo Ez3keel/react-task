@@ -10,7 +10,6 @@ const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   // Padrão false para não exibir o Dialog
   const [AddTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false);
-  const [deleteTaskIsLoading, setDeleteTaskIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchTasks = async () => {

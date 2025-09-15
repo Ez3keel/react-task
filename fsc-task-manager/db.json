@@ -8,20 +8,6 @@
       "status": "done"
     },
     {
-      "id": "2",
-      "title": "Ler livro",
-      "description": "Ler o livro",
-      "time": "morning",
-      "status": "done"
-    },
-    {
-      "id": "3",
-      "title": "Treinar",
-      "description": "Treinar para competição de natação",
-      "time": "afternoon",
-      "status": "in_progress"
-    },
-    {
       "id": "5",
       "title": "Fazer compras",
       "description": "Comprar ingredientes",
@@ -33,6 +19,13 @@
       "title": "Descansar",
       "description": "Assistir filme",
       "time": "evening",
+      "status": "not_started"
+    },
+    {
+      "id": "af5b4915-e65e-4fa5-8a2f-d8916c8b2ee7",
+      "title": "teste",
+      "time": "afternoon",
+      "description": "teste",
       "status": "not_started"
     }
   ]
