@@ -56,7 +56,13 @@ const AddTaskDialog = ({
         message: 'A descrição é obrigatória',
       });
     }
+    // Adiciona os erros a lista pois o state só atualiza após finalizar a function
+    setErrors(newErrors);
 
+    //  Verifica se possui erros e retorna
+    if (newErrors.length > 0) {
+      return setIsloading(false);
+    }
     setIsloading(true);
     //
     const response = await fetch('http://localhost:3000/tasks', {
@@ -79,18 +85,9 @@ const AddTaskDialog = ({
     setIsloading(false);
     //
 
-    // Adiciona os erros a lista pois o state só atualiza após finalizar a function
-    setErrors(newErrors);
-
-    //  Verifica se possui erros e retorna
-    if (newErrors.length > 0) {
-      return;
-    }
-
-    console.log(time.trim());
-    if (!title.trim() || !description.trim() || !time.trim()) {
-      return alert('Preencha todos os campos');
-    }
+    // if (!title.trim() || !description.trim() || !time.trim()) {
+    //   return alert('Preencha todos os campos');
+    // }
 
     handleAddTask({
       id: uuidv4(),
