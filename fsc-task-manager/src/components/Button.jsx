@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 // ✅ Define uma vez só (fora do componente)
 const buttonStyles = tv({
-  base: 'flex items-center justify-center gap-2 rounded-md px-3 transition hover:opacity-70',
+  base: `flex items-center justify-center gap-2 rounded-md px-3 transition hover:opacity-70`,
   variants: {
     variant: {
       primary: 'bg-brand-primary text-white',
@@ -13,6 +13,9 @@ const buttonStyles = tv({
     size: {
       small: 'py-1 text-xs',
       large: 'py-2 text-sm',
+    },
+    disable: {
+      true: 'cursor-not-allowed opacity-50 hover:opacity-50',
     },
   },
   defaultVariants: {
@@ -30,7 +33,15 @@ export default function Button({
 }) {
   //  Uso correto passando todas as props relevantes
   return (
-    <button className={buttonStyles({ variant, size, className })} {...rest}>
+    <button
+      className={buttonStyles({
+        variant,
+        size,
+        disable: rest.disable,
+        className,
+      })}
+      {...rest}
+    >
       {children}
     </button>
   );

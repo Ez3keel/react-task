@@ -9,18 +9,27 @@ import InputLabel from './InputLabel';
 import TimeSelect from './TimeSelect';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
+import { toast } from 'sonner';
+import { LoaderCircle } from 'lucide-react';
 
-const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
+const AddTaskDialog = ({
+  isOpen,
+  handleDialogClose,
+  handleAddTask,
+  onSubmitSucess,
+}) => {
   /*Retirado o state de title porque estamos usando UseRef
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   */
   const [time, setTime] = useState('morning');
   const [errors, setErrors] = useState([]);
+  const [isLoading, setIsloading] = useState(false);
 
-  const handleSaveClick = () => {
+  const handleSaveClick = async () => {
     const newErrors = [];
 
+    console.log('DENTRO DO SAVE');
     console.log(titleRef.current.value);
 
     //Pega o valor do imput agora com useRef
@@ -47,6 +56,28 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
         message: 'A descrição é obrigatória',
       });
     }
+
+    setIsloading(true);
+    //
+    const response = await fetch('http://localhost:3000/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title, time, description }),
+    });
+
+    // Se não receber nada ele retorna e aparece o erro
+    if (!response.ok) {
+      setIsloading(false);
+      return toast.error(
+        'Erro ao adicionar a tarefa. Por favor, tente novamente.',
+      );
+    }
+
+    toast.success('Tarefa adicionada com sucesso');
+    setIsloading(false);
+    //
 
     // Adiciona os erros a lista pois o state só atualiza após finalizar a function
     setErrors(newErrors);
@@ -162,7 +193,9 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
                     className='w-full'
                     variant='secondary'
                     // Fecha o dialog chama o set
-                    onClick={() => handleDialogClose(false)}
+                    onClick={() => {
+                      return handleDialogClose(false);
+                    }}
                   >
                     Cancelar
                   </Button>
@@ -171,7 +204,11 @@ const AddTaskDialog = ({ isOpen, handleDialogClose, handleAddTask }) => {
                     size='large'
                     className='w-full'
                     onClick={handleSaveClick}
+                    disable={isLoading}
                   >
+                    {isLoading && (
+                      <LoaderCircle className='h-6 w-6 animate-spin' />
+                    )}
                     Salvar
                   </Button>
                 </div>

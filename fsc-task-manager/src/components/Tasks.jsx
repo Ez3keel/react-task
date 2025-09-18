@@ -31,6 +31,7 @@ const Tasks = () => {
   //  POST - Criar nova tarefa (CREATE)
   const handleAddTask = async newTask => {
     try {
+      ///CODIGO REMOVIDO
       const response = await fetch('http://localhost:3000/tasks', {
         method: 'POST',
         headers: {
@@ -39,11 +40,9 @@ const Tasks = () => {
         body: JSON.stringify(newTask),
       });
 
-      // Se não receber nada ele retorna e aparece o erro
       if (!response.ok) {
-        return toast.error(
-          'Erro ao adicionar a tarefa. Por favor, tente novamente.',
-        );
+        toast.error('Erro ao adicionar a tarefa. Por favor, tente novamente.');
+        return;
       }
 
       const createdTask = await response.json();
@@ -52,6 +51,7 @@ const Tasks = () => {
       setAddTaskDialogIsOpen(false); //Fecha o Dialog
     } catch (err) {
       console.log(err);
+      toast.error('Erro ao adicionar a tarefa');
     }
   };
 
@@ -166,7 +166,7 @@ const Tasks = () => {
           <AddTaskDialog
             // Quando true abre o Dialog
             isOpen={AddTaskDialogIsOpen}
-            handleDialogClose={() => SetAddTaskDialogIsOpen(false)}
+            handleDialogClose={() => setAddTaskDialogIsOpen(false)}
             handleAddTask={handleAddTask}
           />
         </div>
