@@ -3,9 +3,16 @@ import Button from './Button';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
 
 const TaskItem = ({ task, handleCheckBoxClick, onDeleteSucess }) => {
   const [deleteTaskIsLoading, setDeleteTaskIsLoading] = useState(false);
+
+  // const navigate = useNavigate();
+
+  // const handleDetailsClick = () => {
+  //   navigate(`/task/${task.id}`);
+  // };
 
   //DELETE - Excluir tarefa
   const handleDeleteClick = async () => {
@@ -83,9 +90,9 @@ const TaskItem = ({ task, handleCheckBoxClick, onDeleteSucess }) => {
           )}
         </Button>
 
-        <a href='#' className='transition hover:opacity-75'>
+        <Link to={`/task/${task.id}`} className='transition hover:opacity-75'>
           <ExternalLink size={16} color='#9A9C9F' />
-        </a>
+        </Link>
       </div>
     </div>
   );

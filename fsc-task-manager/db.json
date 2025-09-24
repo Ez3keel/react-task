@@ -20,26 +20,6 @@
       "description": "Assistir filme",
       "time": "evening",
       "status": "not_started"
-    },
-    {
-      "id": "af5b4915-e65e-4fa5-8a2f-d8916c8b2ee7",
-      "title": "teste",
-      "time": "afternoon",
-      "description": "teste",
-      "status": "not_started"
-    },
-    {
-      "id": "b1258a29-c22a-47b7-8d52-96ac03063adf",
-      "title": "testes",
-      "time": "morning",
-      "description": "testes",
-      "status": "not_started"
-    },
-    {
-      "id": "e2f1",
-      "title": "jhg",
-      "time": "morning",
-      "description": "jghfj"
     }
   ]
 }

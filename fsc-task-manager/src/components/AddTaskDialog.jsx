@@ -29,9 +29,6 @@ const AddTaskDialog = ({
   const handleSaveClick = async () => {
     const newErrors = [];
 
-    console.log('DENTRO DO SAVE');
-    console.log(titleRef.current.value);
-
     //Pega o valor do imput agora com useRef
     const title = titleRef.current.value;
     const description = descriptionRef.current.value;
@@ -64,38 +61,26 @@ const AddTaskDialog = ({
       return setIsloading(false);
     }
     setIsloading(true);
-    //
-    const response = await fetch('http://localhost:3000/tasks', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ title, time, description }),
-    });
 
-    // Se não receber nada ele retorna e aparece o erro
-    if (!response.ok) {
+    try {
+      const newTask = {
+        title,
+        time,
+        description,
+        status: 'not_started',
+      };
+
+      // Chama a função do componente pai para adicionar a tarefa
+      await handleAddTask(newTask);
+    } catch (error) {
+      console.error('Erro ao adicionar tarefa: ', error);
+      toast.error('Erro ao adicionar a tarefa');
       setIsloading(false);
-      return toast.error(
-        'Erro ao adicionar a tarefa. Por favor, tente novamente.',
-      );
     }
 
     toast.success('Tarefa adicionada com sucesso');
     setIsloading(false);
     //
-
-    // if (!title.trim() || !description.trim() || !time.trim()) {
-    //   return alert('Preencha todos os campos');
-    // }
-
-    handleAddTask({
-      id: uuidv4(),
-      title,
-      time,
-      description,
-      status: 'not_started',
-    });
     handleDialogClose(false);
   };
 
@@ -159,6 +144,7 @@ const AddTaskDialog = ({
                   */
                   errorMessage={titleErrors?.message}
                   ref={titleRef}
+                  disable={isLoading}
                 />
 
                 {/* HORÁRIO */}
@@ -166,6 +152,7 @@ const AddTaskDialog = ({
                   value={time}
                   onChange={event => setTime(event.target.value)}
                   errorMessage={timeErrors?.message}
+                  disable={isLoading}
                 />
                 {/* {timeErrors && (
                   <p className='text-left text-xs text-red-500'>
@@ -182,6 +169,7 @@ const AddTaskDialog = ({
                   // onChange={event => setDescription(event.target.value)}
                   ref={descriptionRef}
                   errorMessage={descriptionErrors?.message}
+                  disable={isLoading}
                 />
 
                 <div className='flex gap-3'>
