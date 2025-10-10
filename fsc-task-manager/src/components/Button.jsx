@@ -9,6 +9,7 @@ const buttonStyles = tv({
       primary: 'bg-brand-primary text-white',
       ghost: 'bg-transparent text-brand-dark-gray',
       secondary: 'bg-brand-light-gray text-brand-dark-blue',
+      danger: 'bg-brand-danger text-brand-white',
     },
     size: {
       small: 'py-1 text-xs',
@@ -55,7 +56,7 @@ Button.defaultProps = {
 
 Button.PropTypes = {
   children: PropTypes.node.isRequired,
-  variant: PropTypes.oneOf(['primary', 'ghost', 'secondary']),
+  variant: PropTypes.oneOf(['primary', 'ghost', 'secondary', 'danger']),
   size: PropTypes.oneOf(['small', 'large']),
   className: PropTypes.string,
 };
