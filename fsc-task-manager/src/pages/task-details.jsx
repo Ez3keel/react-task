@@ -76,11 +76,11 @@ const TaskDetailsPage = () => {
 
     //  Verifica se possui erros e retorna
     if (newErrors.length > 0) {
-      return saveIsLoading(false);
+      return setSaveIsLoading(false);
     }
     setErrors(newErrors);
     if (newErrors.length > 0) {
-      return saveIsLoading(false);
+      return setSaveIsLoading(false);
     }
 
     const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
@@ -145,7 +145,7 @@ const TaskDetailsPage = () => {
               id='title'
               label='Titulo'
               defaultValue={task?.title}
-              errorMessage={errors?.title}
+              errorMessage={titleErrors?.message}
               ref={titleRef}
             ></Input>
           </div>
@@ -154,7 +154,7 @@ const TaskDetailsPage = () => {
           <div>
             <TimeSelect
               defaultValue={task?.time}
-              errorMessage={errors?.time}
+              errorMessage={timeErrors?.message}
               ref={timeRef}
             />
           </div>
@@ -165,7 +165,7 @@ const TaskDetailsPage = () => {
               id='description'
               label='Descrição'
               defaultValue={task?.description}
-              errorMessage={errors?.description}
+              errorMessage={descriptionErrors?.message}
               ref={descriptionRef}
             ></Input>
           </div>
