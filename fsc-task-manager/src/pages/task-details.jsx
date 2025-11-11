@@ -1,13 +1,14 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Sidebar from './../components/Sidebar';
-import { ChevronRight, ArrowLeft } from 'lucide-react';
+import { ChevronRight, ArrowLeft, LoaderCircle } from 'lucide-react';
 import Button from './../components/Button';
 import { Trash2 } from 'lucide-react';
 import InputLabel from './../components/InputLabel';
 import Input from '../components/Input';
 import TimeSelect from './../components/TimeSelect';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const TaskDetailsPage = () => {
   // Pega o params da URL
@@ -95,7 +96,13 @@ const TaskDetailsPage = () => {
     if (!response.ok) {
       return setSaveIsLoading(false);
     }
+
+    //pega e atualiza com a resposta do banco
+    //Atualiza o titulo e a descrição e time
+    const newTask = await response.json();
+    setTask(newTask);
     setSaveIsLoading(false);
+    toast.success('Tarefa salva com sucesso');
   };
 
   const titleErrors = errors.find(error => error.inputName === 'title');
@@ -172,10 +179,8 @@ const TaskDetailsPage = () => {
         </div>
 
         <div className='flex w-full justify-end gap-3'>
-          <Button size='large' variant='secondary'>
-            Cancelar
-          </Button>
           <Button size='large' variant='primary' onClick={handleSaveClick}>
+            {saveIsLoading && <LoaderCircle className='h-4 w-4 animate-spin' />}
             Salvar
           </Button>
         </div>
