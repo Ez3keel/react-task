@@ -1,13 +1,6 @@
 {
   "tasks": [
     {
-      "id": "1",
-      "title": "Estudar FSc",
-      "description": "Estudar programação",
-      "time": "morning",
-      "status": "done"
-    },
-    {
       "id": "5",
       "title": "Fazer compras",
       "description": "Comprar ingredientes",
@@ -22,10 +15,10 @@
       "status": "not_started"
     },
     {
-      "id": "d801",
-      "title": "teste",
+      "id": "a1cf",
+      "title": "fdsafd",
       "time": "morning",
-      "description": "te",
+      "description": "fdsafs",
       "status": "not_started"
     }
   ]
