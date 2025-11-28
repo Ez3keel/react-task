@@ -9,18 +9,19 @@ import Input from '../components/Input';
 import TimeSelect from './../components/TimeSelect';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
+import { useForm } from 'react-hook-form';
 
 const TaskDetailsPage = () => {
   // Pega o params da URL
   const { taskId } = useParams();
   const [task, setTask] = useState();
   const navigate = useNavigate();
-  const [saveIsLoading, setSaveIsLoading] = useState(false);
-  const [errors, setErrors] = useState([]);
-
-  const titleRef = useRef();
-  const descriptionRef = useRef();
-  const timeRef = useRef();
+  const {
+    register,
+    formState: { errors, isSubmitting },
+    handleSubmit,
+    reset,
+  } = useForm();
 
   const handleBackClick = () => {
     navigate(-1);
@@ -36,53 +37,22 @@ const TaskDetailsPage = () => {
       // Converte os dados para json
       const data = await response.json();
       setTask(data);
+      //O reset vai alterar os default values quando a requisição chegar
+      //porque quando o componente é montado o estado é vazio
+      //quando o useEffect receber os dados da api ai o reset atualiza os dados
+      reset(data);
     };
 
     fetchTasks();
-  }, [taskId]);
+  }, [taskId, reset]);
   // Sempre que o taskID mudar ele vai exec o effect
 
-  const handleSaveClick = async () => {
-    setSaveIsLoading(true);
-
-    const newErrors = [];
-
-    //Pega o valor do imput agora com useRef
-    const title = titleRef.current.value;
-    const description = descriptionRef.current.value;
-    const time = timeRef.current.value;
-
-    // Adiciona o erro ao state
-    if (!title.trim()) {
-      newErrors.push({
-        inputName: 'title',
-        message: 'O titulo é obrigatório',
-      });
-    }
-
-    if (!time.trim()) {
-      newErrors.push({
-        inputName: 'time',
-        message: 'O horário é obrigatório',
-      });
-    }
-    if (!description.trim()) {
-      newErrors.push({
-        inputName: 'description',
-        message: 'A descrição é obrigatória',
-      });
-    }
-    // Adiciona os erros a lista pois o state só atualiza após finalizar a function
-    setErrors(newErrors);
-
-    //  Verifica se possui erros e retorna
-    if (newErrors.length > 0) {
-      return setSaveIsLoading(false);
-    }
-    setErrors(newErrors);
-    if (newErrors.length > 0) {
-      return setSaveIsLoading(false);
-    }
+  //no data vai conter os valores dos inputs
+  const handleSaveClick = async data => {
+    //Pega o valor do input e salva sem espaços
+    const title = data.title.trim();
+    const description = data.description.trim();
+    const time = data.time.trim();
 
     const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
       method: 'PATCH',
@@ -94,14 +64,13 @@ const TaskDetailsPage = () => {
     });
 
     if (!response.ok) {
-      return setSaveIsLoading(false);
+      return toast.error('Ocorreu um erro ao salvar a tarefa.');
     }
 
     //pega e atualiza com a resposta do banco
     //Atualiza o titulo e a descrição e time
     const newTask = await response.json();
     setTask(newTask);
-    setSaveIsLoading(false);
     toast.success('Tarefa salva com sucesso');
   };
 
@@ -116,12 +85,6 @@ const TaskDetailsPage = () => {
     toast.success('Tarefa deletada com sucesso');
     navigate(-1);
   };
-
-  const titleErrors = errors.find(error => error.inputName === 'title');
-  const timeErrors = errors.find(error => error.inputName === 'time');
-  const descriptionErrors = errors.find(
-    error => error.inputName === 'description',
-  );
 
   return (
     <div className='flex'>
@@ -160,46 +123,77 @@ const TaskDetailsPage = () => {
           </Button>
         </div>
 
-        {/* dados da tarefas */}
-        <div className='round space-y-6 bg-brand-white p-6'>
-          {/* Nome da tarefa */}
-          <div>
-            <Input
-              id='title'
-              label='Titulo'
-              defaultValue={task?.title}
-              errorMessage={titleErrors?.message}
-              ref={titleRef}
-            ></Input>
+        <form onSubmit={handleSubmit(handleSaveClick)}>
+          {/* dados da tarefas */}
+          <div className='round space-y-6 bg-brand-white p-6'>
+            {/* Nome da tarefa */}
+            <div>
+              <Input
+                id='title'
+                label='Titulo'
+                {...register('title', {
+                  required: 'O título é obrigatório',
+                  validate: value => {
+                    if (!value.trim()) {
+                      return 'O título não pode ser vazio.';
+                    }
+                    return true;
+                  },
+                })}
+                errorMessage={errors?.title?.message}
+              ></Input>
+            </div>
+
+            {/* Horário */}
+            <div>
+              <TimeSelect
+                {...register('time', {
+                  required: 'O horário é obrigatório',
+                  validate: value => {
+                    if (!value.trim()) {
+                      return 'O horário não pode ser vazio.';
+                    }
+                    return true;
+                  },
+                })}
+                errorMessage={errors?.time?.message}
+              />
+            </div>
+
+            {/* Descrição */}
+            <div>
+              <Input
+                id='description'
+                label='Descrição'
+                {...register('description', {
+                  required: 'A descrição é obrigatória',
+                  validate: value => {
+                    if (!value.trim()) {
+                      return 'A descrição não pode ser vazia.';
+                    }
+                    return true;
+                  },
+                })}
+                errorMessage={errors?.description?.message}
+              ></Input>
+            </div>
           </div>
 
-          {/* Horário */}
-          <div>
-            <TimeSelect
-              defaultValue={task?.time}
-              errorMessage={timeErrors?.message}
-              ref={timeRef}
-            />
+          {/* Botão de salvar */}
+          <div className='flex w-full justify-end gap-3'>
+            <Button
+              size='large'
+              variant='primary'
+              type='submit'
+              disable={isSubmitting}
+            >
+              {isSubmitting && (
+                <LoaderCircle className='h-4 w-4 animate-spin' />
+              )}
+              Salvar
+            </Button>
           </div>
-
-          {/* Descrição */}
-          <div>
-            <Input
-              id='description'
-              label='Descrição'
-              defaultValue={task?.description}
-              errorMessage={descriptionErrors?.message}
-              ref={descriptionRef}
-            ></Input>
-          </div>
-        </div>
-
-        <div className='flex w-full justify-end gap-3'>
-          <Button size='large' variant='primary' onClick={handleSaveClick}>
-            {saveIsLoading && <LoaderCircle className='h-4 w-4 animate-spin' />}
-            Salvar
-          </Button>
-        </div>
+        </form>
       </div>
     </div>
   );

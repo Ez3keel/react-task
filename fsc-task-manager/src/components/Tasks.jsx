@@ -175,7 +175,11 @@ const Tasks = () => {
       <div className='rounded-xl bg-white p-6'>
         <div className='my-6 space-y-3'>
           <TasksSeparator title='Manhã' icon={<Sun size={16} />} />
-
+          {morningTasks.length === 0 && (
+            <p className='text-sm text-brand-text-gray'>
+              Nenhuma tarefa cadastrada para o periodo da manhã.
+            </p>
+          )}
           {/* TAREFAS DE MANHÃ */}
           {morningTasks.map(task => (
             <TaskItem
@@ -189,7 +193,11 @@ const Tasks = () => {
 
         <div className='my-6 space-y-3'>
           <TasksSeparator title='Tarde' icon={<Cloudy size={16} />} />
-
+          {afternoonTasks.length === 0 && (
+            <p className='text-sm text-brand-text-gray'>
+              Nenhuma tarefa cadastrada para o periodo da tarde.
+            </p>
+          )}
           {/* TAREFAS DA TARDE */}
           {afternoonTasks.map(task => (
             <TaskItem
@@ -203,7 +211,11 @@ const Tasks = () => {
 
         <div className='space-y-3'>
           <TasksSeparator title='Noite' icon={<Moon size={16} />} />
-
+          {eveningTasks.length === 0 && (
+            <p className='text-sm text-brand-text-gray'>
+              Nenhuma tarefa cadastrada para o periodo da noite.
+            </p>
+          )}
           {/* TAREFAS DA NOITE */}
           {eveningTasks.map(task => (
             <TaskItem
