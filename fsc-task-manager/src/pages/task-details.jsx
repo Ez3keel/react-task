@@ -86,6 +86,7 @@ const TaskDetailsPage = () => {
     navigate(-1);
   };
 
+ 
   return (
     <div className='flex'>
       <Sidebar />
